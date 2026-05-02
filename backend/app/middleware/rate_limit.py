@@ -4,7 +4,13 @@ from slowapi.errors import RateLimitExceeded
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-limiter = Limiter(key_func=get_remote_address)
+def safe_get_remote_address(request: Request) -> str:
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0]
+    return request.client.host if request.client else "127.0.0.1"
+
+limiter = Limiter(key_func=safe_get_remote_address)
 
 
 def rate_limit_handler(request: Request, exc: RateLimitExceeded):

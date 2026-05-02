@@ -24,7 +24,6 @@ app.add_middleware(
 )
 
 # Create tables
-Base.metadata.create_all(bind=engine)
 
 # Routers
 app.include_router(auth.router)

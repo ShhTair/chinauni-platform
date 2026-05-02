@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --clr-accent:     #C0392B;
+  --clr-accent-2:   #E8A000;
+  --clr-bg:         #F8F7F4;
+  --clr-surface:    #FFFFFF;
+  --clr-border:     #E2DFD9;
+  --clr-text:       #1A1A1A;
+  --clr-text-muted: #6B6B6B;
+  --clr-c9:         #7C3AED;
+  --clr-985:        #1D4ED8;
+  --clr-211:        #0369A1;
+  --clr-hk:         #047857;
+  --clr-us:         #B45309;
+  --clr-uk:         #9F1239;
+  --radius: 0.5rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography ── */
+h1, h2, h3 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  line-height: 1.2;
+}
+
+.font-display {
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+
+.font-mono-data {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.875em;
+}
+
+/* ── Content protection ── */
+.protected-content {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* ── Blur gate ── */
+.blur-gate {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: var(--clr-bg); }
+::-webkit-scrollbar-thumb { background: var(--clr-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #b0ada6; }
+
+/* ── Leaflet map ── */
+.leaflet-container {
+  font-family: 'Outfit', system-ui, sans-serif !important;
+  z-index: 0;
+}
+
+/* ── Custom marker clusters ── */
+.marker-cluster-small  { background-color: rgba(192, 57, 43, 0.2); }
+.marker-cluster-small div  { background-color: rgba(192, 57, 43, 0.8); color: white; }
+.marker-cluster-medium { background-color: rgba(192, 57, 43, 0.3); }
+.marker-cluster-medium div { background-color: rgba(192, 57, 43, 0.9); color: white; }
+.marker-cluster-large  { background-color: rgba(192, 57, 43, 0.4); }
+.marker-cluster-large div  { background-color: rgba(192, 57, 43, 1.0); color: white; }
+
+/* ── Prestige stars ── */
+.star-filled { color: var(--clr-accent-2, #E8A000); }
+
+/* ── Table ── */
+.uni-table th {
+  position: sticky;
+  top: 0;
+  background: var(--clr-surface);
+  z-index: 10;
+  border-bottom: 2px solid var(--clr-border);
+}
+
+/* ── Animated underline ── */
+.animated-underline {
+  position: relative;
+}
+.animated-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--clr-accent);
+  transition: width 0.3s ease;
+}
+.animated-underline:hover::after { width: 100%; }
+
+/* ── Card hover lift ── */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+/* ── Gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--clr-accent) 0%, #E8A000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Badge variants ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ── Noise texture overlay ── */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* ── Stepper ── */
+.step-line {
+  flex: 1;
+  height: 1px;
+  background: var(--clr-border);
+}
+.step-line.active {
+  background: var(--clr-accent);
+}
+
+/* ── Timeline view ── */
+.timeline-month {
+  min-width: 72px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── Portal status ── */
+.portal-open  { color: #16a34a; background: #f0fdf4; border-color: #86efac; }
+.portal-closed{ color: #9f1239; background: #fff1f2; border-color: #fecdd3; }

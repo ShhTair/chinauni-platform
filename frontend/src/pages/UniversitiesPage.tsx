@@ -1,0 +1,247 @@
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useQuery } from '@tanstack/react-query'
+import {
+  LayoutGrid, List, Table2, Map, GitBranch,
+  SlidersHorizontal, ChevronLeft, ChevronRight
+} from 'lucide-react'
+import { universitiesApi } from '@/lib/api'
+import { useFiltersStore, type ViewMode } from '@/stores/filters'
+import { useAuthStore } from '@/stores/auth'
+import { FilterSidebar } from '@/components/universities/FilterSidebar'
+import { UniCardGrid, UniCardList } from '@/components/universities/UniCard'
+import { UniTable } from '@/components/universities/UniTable'
+import { MapView } from '@/components/map/MapView'
+import { TimelineView } from '@/components/universities/TimelineView'
+import { AuthModal } from '@/components/layout/AuthModal'
+import { Button } from '@/components/ui/Button'
+import type { University } from '@/types'
+
+const VIEW_BUTTONS: { mode: ViewMode; icon: React.ElementType; label: string }[] = [
+  { mode: 'grid', icon: LayoutGrid, label: 'Сетка' },
+  { mode: 'list', icon: List, label: 'Список' },
+  { mode: 'table', icon: Table2, label: 'Таблица' },
+  { mode: 'map', icon: Map, label: 'Карта' },
+  { mode: 'timeline', icon: GitBranch, label: 'Тайм лайн' },
+]
+
+export function UniversitiesPage() {
+  const filters = useFiltersStore()
+  const { user } = useAuthStore()
+  const [authOpen, setAuthOpen] = useState(false)
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+
+  const queryParams = {
+    search: filters.search || undefined,
+    province: filters.province || undefined,
+    league: filters.league || undefined,
+    english_ug: filters.english_ug || undefined,
+    prestige_min: filters.prestige_min || undefined,
+    prestige_max: filters.prestige_max || undefined,
+    diploma_type: filters.diploma_type || undefined,
+    sort: filters.sort,
+    page: filters.page,
+    limit: 24,
+  }
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['universities', queryParams],
+    queryFn: () => universitiesApi.list(queryParams),
+  })
+
+  const universities: University[] = data?.data?.items || []
+  const total: number = data?.data?.total || 0
+  const pages: number = data?.data?.pages || 1
+  const isAuth: boolean = !!user
+
+  return (
+    <>
+      {/* Header */}
+      <div className="bg-surface border-b border-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <div className="flex items-end justify-between">
+            <div>
+              <h1 className="font-display text-4xl text-ink">Университеты</h1>
+              <p className="text-ink-muted mt-1">
+                {isLoading ? 'Загрузка...' : `${total} университетов`}
+                {!isAuth && ' · войдите чтобы увидеть все'}
+              </p>
+            </div>
+
+            {/* View toggles */}
+            <div className="hidden sm:flex items-center bg-bg rounded-xl p-1 gap-0.5">
+              {VIEW_BUTTONS.map(({ mode, icon: Icon, label }) => (
+                <button
+                  key={mode}
+                  onClick={() => filters.setViewMode(mode)}
+                  title={label}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 ${
+                    filters.viewMode === mode
+                      ? 'bg-surface text-ink shadow-sm'
+                      : 'text-ink-muted hover:text-ink'
+                  }`}
+                >
+                  <Icon size={14} />
+                  <span className="hidden lg:inline">{label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile view + filter buttons */}
+          <div className="flex items-center gap-2 mt-4 sm:hidden">
+            <button
+              onClick={() => setMobileSidebarOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-bg rounded-xl text-sm font-medium text-ink-muted border border-border"
+            >
+              <SlidersHorizontal size={14} /> Фильтры
+            </button>
+            <div className="flex items-center bg-bg rounded-xl p-1 gap-0.5 ml-auto">
+              {VIEW_BUTTONS.slice(0, 4).map(({ mode, icon: Icon }) => (
+                <button
+                  key={mode}
+                  onClick={() => filters.setViewMode(mode)}
+                  className={`p-2 rounded-lg transition-all ${
+                    filters.viewMode === mode ? 'bg-surface text-ink shadow-sm' : 'text-ink-muted'
+                  }`}
+                >
+                  <Icon size={14} />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {filters.viewMode === 'map' ? (
+          <MapView />
+        ) : (
+          <div className="flex gap-6">
+            {/* Sidebar */}
+            <aside className="hidden md:block w-64 flex-shrink-0">
+              <div className="sticky top-20">
+                <FilterSidebar />
+              </div>
+            </aside>
+
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i} className="bg-surface rounded-2xl h-72 animate-pulse" />
+                  ))}
+                </div>
+              ) : error ? (
+                <div className="text-center py-20">
+                  <p className="text-ink-muted">Ошибка загрузки. Попробуйте снова.</p>
+                </div>
+              ) : (
+                <>
+                  {filters.viewMode === 'grid' && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                      {universities.map((uni) => (
+                        <UniCardGrid key={uni.id} uni={uni} />
+                      ))}
+                    </div>
+                  )}
+
+                  {filters.viewMode === 'list' && (
+                    <div className="space-y-3">
+                      {universities.map((uni) => (
+                        <UniCardList key={uni.id} uni={uni} />
+                      ))}
+                    </div>
+                  )}
+
+                  {filters.viewMode === 'table' && (
+                    <UniTable
+                      universities={universities}
+                      isAuth={isAuth}
+                      onAuthRequired={() => setAuthOpen(true)}
+                    />
+                  )}
+
+                  {filters.viewMode === 'timeline' && (
+                    <TimelineView universities={universities} />
+                  )}
+
+                  {/* Auth gate for grid/list */}
+                  {!isAuth && filters.viewMode !== 'table' && universities.length > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-8 text-center bg-surface rounded-2xl border border-border p-8"
+                    >
+                      <p className="font-display text-2xl text-ink mb-2">
+                        Видите только часть базы
+                      </p>
+                      <p className="text-ink-muted mb-4">
+                        Войдите чтобы увидеть все {total}+ университетов, ссылки на порталы и полные данные
+                      </p>
+                      <Button onClick={() => setAuthOpen(true)}>
+                        Войти бесплатно
+                      </Button>
+                    </motion.div>
+                  )}
+
+                  {/* Pagination */}
+                  {isAuth && pages > 1 && (
+                    <div className="flex items-center justify-center gap-3 mt-10">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={filters.prevPage}
+                        disabled={filters.page <= 1}
+                      >
+                        <ChevronLeft size={16} />
+                      </Button>
+                      <span className="text-sm text-ink-muted font-mono-data">
+                        {filters.page} / {pages}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={filters.nextPage}
+                        disabled={filters.page >= pages}
+                      >
+                        <ChevronRight size={16} />
+                      </Button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile sidebar drawer */}
+      <AnimatePresence>
+        {mobileSidebarOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 z-50 md:hidden"
+              onClick={() => setMobileSidebarOpen(false)}
+            />
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              className="fixed top-0 left-0 bottom-0 w-80 bg-bg z-50 md:hidden overflow-y-auto p-4 pt-6"
+            >
+              <FilterSidebar mobile onClose={() => setMobileSidebarOpen(false)} />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
+    </>
+  )
+}

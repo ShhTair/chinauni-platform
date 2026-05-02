@@ -6,7 +6,8 @@ psycopg2-binary
 pydantic[email]
 pydantic-settings
 passlib[bcrypt]
-python-jose[cryptography]
+python-jose
+PyJWT
 python-multipart
 fastapi-mail
 pillow

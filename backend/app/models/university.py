@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy import Column, String, Boolean, Integer, Float, ForeignKey, Text, Date
-from sqlalchemy.dialects.postgresql import UUID, JSON
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import relationship
 from ..database import Base
 
@@ -35,9 +35,9 @@ class University(Base):
     notes_private = Column(Text, nullable=True)
     cover_image_url = Column(String, nullable=True)
     logo_url = Column(String, nullable=True)
-    gallery_urls = Column(JSON, nullable=True)
+    gallery_urls = Column(JSONB, nullable=True)
     google_maps_url = Column(String, nullable=True)
-    coordinates = Column(JSON, nullable=True)
+    coordinates = Column(JSONB, nullable=True)
     last_checked = Column(Date, nullable=True)
 
     majors = relationship("Major", back_populates="university", cascade="all, delete-orphan")

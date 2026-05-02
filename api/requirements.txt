@@ -7,6 +7,9 @@ pydantic[email]
 pydantic-settings
 passlib[bcrypt]
 python-jose
+ecdsa
+rsa
+pyasn1
 PyJWT
 python-multipart
 fastapi-mail

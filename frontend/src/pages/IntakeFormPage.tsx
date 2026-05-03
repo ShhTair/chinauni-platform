@@ -10,8 +10,6 @@ import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 import type { University } from '@/types'
 
-const STEPS = ['Университет', 'Экзамены', 'Активности', 'Аккаунт'] as const
-type Step = 0 | 1 | 2 | 3
 
 const EXAM_TYPES = ['IELTS', 'TOEFL', 'Duolingo', 'SAT', 'GPA', 'ENT', 'IB', 'A-Level', 'CSCA', 'HSK', 'Other']
 const DEGREE_LEVELS = [
@@ -84,7 +82,6 @@ interface IntakeResult {
 export function IntakeFormPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const [step, setStep] = useState<Step>(0)
   const [form, setForm] = useState<FormState>(defaultForm)
   const [result, setResult] = useState<IntakeResult | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -240,76 +237,29 @@ export function IntakeFormPage() {
           Мы создадим для вас аккаунт автоматически.
         </p>
       </div>
-
-      {/* Stepper */}
-      <div className="flex items-center gap-0 mb-10">
-        {STEPS.map((label, i) => (
-          <div key={i} className="flex items-center flex-1">
-            <div className="flex flex-col items-center">
-              <div className={cn(
-                'w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all duration-300',
-                i < step ? 'bg-accent border-accent text-white' :
-                i === step ? 'border-accent text-accent' :
-                'border-border text-ink-muted'
-              )}>
-                {i < step ? <Check size={14} /> : i + 1}
-              </div>
-              <span className={cn(
-                'text-xs mt-1 hidden sm:block font-medium',
-                i === step ? 'text-accent' : 'text-ink-muted'
-              )}>
-                {label}
-              </span>
-            </div>
-            {i < STEPS.length - 1 && (
-              <div className={cn('step-line flex-1 mx-2 -mt-4', i < step ? 'active' : '')} />
-            )}
-          </div>
-        ))}
-      </div>
-
       {/* Step content */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={step}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.2 }}
-          className="space-y-5"
-        >
-          {step === 0 && (
+        <div className="space-y-12">
+          <div className="space-y-5">
             <Step1 uni={uni} form={form} set={set} />
-          )}
-          {step === 1 && (
+          </div>
+          <hr className="border-border" />
+          <div className="space-y-5">
             <Step2 form={form} toggleExam={toggleExam} updateExam={updateExam} />
-          )}
-          {step === 2 && (
+          </div>
+          <hr className="border-border" />
+          <div className="space-y-5">
             <Step3 form={form} set={set} />
-          )}
-          {step === 3 && (
+          </div>
+          <hr className="border-border" />
+          <div className="space-y-5">
             <Step4 form={form} set={set} error={error} />
-          )}
-        </motion.div>
-      </AnimatePresence>
-
+          </div>
+        </div>
       {/* Navigation */}
-      <div className="flex items-center gap-3 mt-10">
-        {step > 0 && (
-          <Button variant="outline" onClick={() => setStep((s) => (s - 1) as Step)}>
-            <ChevronLeft size={16} /> Назад
-          </Button>
-        )}
-        <div className="flex-1" />
-        {step < 3 ? (
-          <Button onClick={() => setStep((s) => (s + 1) as Step)}>
-            Далее <ChevronRight size={16} />
-          </Button>
-        ) : (
-          <Button loading={submitting} onClick={handleSubmit}>
-            Отправить <Check size={16} />
-          </Button>
-        )}
+      <div className="mt-10">
+        <Button className="w-full" size="lg" loading={submitting} onClick={handleSubmit}>
+            Отправить анкету
+        </Button>
       </div>
 
       {error && (

@@ -74,7 +74,7 @@ export function HomePage() {
         </motion.div>
 
         <motion.div
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24"
+          className="relative z-10 max-w-[96%] mx-auto px-4 sm:px-6 py-24"
           style={{ opacity: heroOpacity }}
         >
           <div className="max-w-3xl">
@@ -167,7 +167,7 @@ export function HomePage() {
       {/* ── Upcoming Deadlines Banner ──────────────────────────── */}
       {deadlines.length > 0 && (
         <section className="bg-accent/5 border-y border-accent/20 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+          <div className="max-w-[96%] mx-auto px-4 sm:px-6 py-4">
             <div className="flex items-center gap-4 overflow-x-auto hide-scrollbar">
               <span className="text-xs font-semibold text-accent uppercase tracking-wider flex-shrink-0">
                 ⏰ Ближайшие дедлайны
@@ -204,7 +204,7 @@ export function HomePage() {
       )}
 
       {/* ── Featured Universities ──────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+      <section className="max-w-[96%] mx-auto px-4 sm:px-6 py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -246,7 +246,7 @@ export function HomePage() {
 
       {/* ── How it works ──────────────────────────────────────── */}
       <section className="bg-surface border-y border-border py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="max-w-[96%] mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -288,7 +288,7 @@ export function HomePage() {
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+      <section className="max-w-[96%] mx-auto px-4 sm:px-6 py-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.97 }}
           whileInView={{ opacity: 1, scale: 1 }}

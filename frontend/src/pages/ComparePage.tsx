@@ -45,7 +45,7 @@ export function ComparePage() {
 
   if (selectedIds.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 text-center">
+      <div className="max-w-[96%] mx-auto px-4 sm:px-6 py-20 text-center">
         <div className="text-5xl mb-4">⚖️</div>
         <h1 className="font-display text-4xl text-ink mb-3">Сравнение университетов</h1>
         <p className="text-ink-muted mb-6">Выберите 2-4 университета из каталога для сравнения</p>
@@ -57,7 +57,7 @@ export function ComparePage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div className="max-w-[96%] mx-auto px-4 sm:px-6 py-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>

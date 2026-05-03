@@ -54,7 +54,7 @@ export function UniversityDetailPage() {
   const selected = uni ? isSelected(uni.id) : false
 
   if (isLoading) return (
-    <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+    <div className="max-w-[96%] mx-auto px-4 py-20 text-center">
       <div className="animate-pulse space-y-4">
         <div className="h-64 bg-border rounded-2xl" />
         <div className="h-8 bg-border rounded w-1/2 mx-auto" />
@@ -63,7 +63,7 @@ export function UniversityDetailPage() {
   )
 
   if (error || !uni) return (
-    <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+    <div className="max-w-[96%] mx-auto px-4 py-20 text-center">
       <p className="font-display text-2xl text-ink">Университет не найден</p>
       <Link to="/universities" className="text-accent text-sm mt-2 inline-block hover:underline">← К каталогу</Link>
     </div>
@@ -92,7 +92,7 @@ export function UniversityDetailPage() {
 
         {/* Title overlay */}
         <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-8 pb-6">
-          <div className="max-w-7xl mx-auto flex items-end justify-between gap-4">
+          <div className="max-w-[96%] mx-auto flex items-end justify-between gap-4">
             <div>
               {uni.logo_url && (
                 <div className="w-14 h-14 rounded-xl bg-surface shadow-lg overflow-hidden mb-3">
@@ -123,7 +123,7 @@ export function UniversityDetailPage() {
 
       {/* ── Quick stats ── */}
       <div className="bg-surface border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4">
+        <div className="max-w-[96%] mx-auto px-4 sm:px-8 py-4">
           <div className="flex flex-wrap gap-6">
             {uni.city && (
               <div className="flex items-center gap-1.5 text-sm text-ink-muted">
@@ -151,7 +151,7 @@ export function UniversityDetailPage() {
 
       {/* ── Tabs ── */}
       <div className="bg-surface border-b border-border sticky top-16 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="max-w-[96%] mx-auto px-4 sm:px-8">
           <div className="flex gap-0 overflow-x-auto">
             {TABS.map((t) => (
               <button
@@ -178,7 +178,7 @@ export function UniversityDetailPage() {
       </div>
 
       {/* ── Tab content ── */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8">
+      <div className="max-w-[96%] mx-auto px-4 sm:px-8 py-8">
         <motion.div
           key={tab}
           initial={{ opacity: 0, y: 10 }}

@@ -35,7 +35,7 @@ export default function MajorsPage() {
 
   return (
     <div className="min-h-screen bg-bg text-text pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-[96%] mx-auto space-y-8">
         <header className="space-y-4">
           <h1 className="text-5xl font-display text-accent flex items-center gap-4">
             <BookOpen size={40} />

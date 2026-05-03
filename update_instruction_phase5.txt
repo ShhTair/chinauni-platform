@@ -1,0 +1,18 @@
+Tasks for Phase 5 (Intake Form refactor, i18n & Theme fixes, Student Profiles):
+
+1. **Intake Form Refactor (`IntakeFormPage.tsx`)**:
+   - Remove the 4-step stepper UI.
+   - Convert it into a single, comprehensive page/form where users can fill in everything at once.
+   - Group the fields logically (Personal Info, Academic Background, English/Exams, Extracurriculars, Target Universities).
+   - Ensure the form looks clean, uses the Brandbook UI components (Inputs, Selects, Cards), and is fully responsive.
+   - Connect the form submission to the backend endpoint (or at least prepare the `onSubmit` handler to send the consolidated JSON payload).
+
+2. **i18n & Theme Fixes**:
+   - Investigate why the Theme (Dark/Light) and Language toggles are "not fully working".
+   - Fix hardcoded text across major pages (like `HomePage`, `UniversitiesPage`, `Navbar`) to use the `useTranslation` hook (`t('...')`).
+   - Fix hardcoded colors (like `bg-white`, `text-black`, `border-gray-200`) across components to use CSS variables (`bg-surface`, `text-ink`, `border-border`) so Dark Mode applies 100% everywhere.
+   - Ensure `next-themes` persists correctly and updates all background elements.
+
+3. **Compare Page & Crowdsourcing (Sub-agents can help here)**:
+   - Make the `/compare` page fully functional (side-by-side view of selected universities).
+   - Wire up the basic `UserSubmission` logic (allow users to suggest edits on the `UniversityDetailPage`).

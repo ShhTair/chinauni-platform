@@ -40,7 +40,7 @@ const defaults = {
 export const useFiltersStore = create<FiltersState>((set) => ({
   ...defaults,
   viewMode: 'grid' as ViewMode,
-  isFullWidth: false,
+  isFullWidth: true,
 
   setFilter: (key, value) => set({ [key]: value, page: 1 } as Partial<FiltersState>),
   

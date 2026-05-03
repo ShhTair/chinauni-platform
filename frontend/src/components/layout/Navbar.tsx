@@ -51,7 +51,7 @@ export function Navbar() {
             : 'bg-transparent'
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <div className="max-w-[96%] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <span className="font-display text-2xl text-ink leading-none">
@@ -75,7 +75,7 @@ export function Navbar() {
                     : 'text-ink-muted hover:text-ink'
                 )}
               >
-                {link.translationKey ? t(link.translationKey) : link.label}
+                {link.translationKey ? t(link.translationKey) : t(link.translationKey)}
               </Link>
             ))}
           </nav>
@@ -191,7 +191,7 @@ export function Navbar() {
                   to={link.href}
                   className="block px-3 py-2 rounded-lg text-sm font-medium text-ink hover:bg-bg transition-colors"
                 >
-                  {link.translationKey ? t(link.translationKey) : link.label}
+                  {link.translationKey ? t(link.translationKey) : t(link.translationKey)}
                 </Link>
               ))}
               {selectedIds.length > 0 && (

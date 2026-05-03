@@ -19,6 +19,7 @@ class University(Base):
     diploma_type = Column(String, nullable=True)  # Chinese | US | UK | HK | Dual
     english_ug = Column(String, nullable=True)  # yes | partial | no
     qs_rank = Column(Integer, nullable=True)
+    shanghai_rank = Column(Integer, nullable=True)
     the_rank = Column(Integer, nullable=True)
     intl_pct = Column(Integer, nullable=True)
     url_info = Column(String, nullable=True)

@@ -10,6 +10,7 @@ export interface University {
   diploma_type?: string
   english_ug?: string
   qs_rank?: number
+  shanghai_rank?: number
   the_rank?: number
   intl_pct?: number
   url_info?: string

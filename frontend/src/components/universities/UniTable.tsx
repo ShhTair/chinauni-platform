@@ -128,6 +128,14 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
           return v ? <span className="font-mono text-sm">#{v}</span> : <span className="text-ink-faint">—</span>
         },
       }),
+      col.accessor('shanghai_rank', {
+        id: 'shanghai_rank',
+        header: 'SHANGHAI',
+        cell: (info) => {
+          const v = info.getValue()
+          return v ? <span className="font-mono text-sm text-accent font-bold">#{v}</span> : <span className="text-ink-faint">—</span>
+        },
+      }),
       col.accessor('portal_status', {
         id: 'portal_status',
         header: 'PORTAL',

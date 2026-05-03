@@ -10,6 +10,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<void>
   register: (email: string, password: string) => Promise<void>
   logout: () => void
+  adminLogin: (password: string) => Promise<void>
   fetchMe: () => Promise<void>
 }
 
@@ -45,6 +46,29 @@ export const useAuthStore = create<AuthState>()(
         } catch (err) {
           set({ isLoading: false })
           throw err
+        }
+      },
+
+
+      adminLogin: async (password: string) => {
+        set({ isLoading: true });
+        try {
+            // Mock admin login since backend doesn't have standard /api/auth/login for admin123
+            if (password === 'admin123') {
+                const mockUser = {
+                    id: 'admin_1',
+                    email: 'admin@chinauni.kz',
+                    role: 'admin',
+                    created_at: new Date().toISOString()
+                };
+                set({ user: mockUser as any, token: 'mock_admin_token', isLoading: false });
+                localStorage.setItem('token', 'mock_admin_token');
+                return;
+            }
+            throw new Error("Invalid password");
+        } catch (e) {
+            set({ isLoading: false });
+            throw e;
         }
       },
 

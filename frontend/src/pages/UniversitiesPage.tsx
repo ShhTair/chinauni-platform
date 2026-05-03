@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -11,12 +11,26 @@ import { useAuthStore } from '@/stores/auth'
 import { FilterSidebar } from '@/components/universities/FilterSidebar'
 import { UniCardGrid, UniCardList } from '@/components/universities/UniCard'
 import { UniTable } from '@/components/universities/UniTable'
-import { MapView } from '@/components/map/MapView'
 import { TimelineView } from '@/components/universities/TimelineView'
 import { AuthModal } from '@/components/layout/AuthModal'
 import { Button } from '@/components/ui/Button'
-import { UniCardGridSkeleton, UniCardListSkeleton } from '@/components/ui/Skeleton'
+import { UniCardGridSkeleton, UniCardListSkeleton, Skeleton } from '@/components/ui/Skeleton'
 import type { University } from '@/types'
+
+// Lazy-load Leaflet map (heavy — ~200KB)
+const MapView = lazy(() =>
+  import('@/components/map/MapView').then(m => ({ default: m.MapView }))
+)
+function MapLoadingFallback() {
+  return (
+    <div className="relative rounded-2xl overflow-hidden">
+      <Skeleton className="h-[500px] w-full" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <p className="text-ink-muted text-sm">Загрузка карты...</p>
+      </div>
+    </div>
+  )
+}
 
 const VIEW_BUTTONS: { mode: ViewMode; icon: React.ElementType; label: string }[] = [
   { mode: 'grid', icon: LayoutGrid, label: 'Сетка' },
@@ -117,7 +131,9 @@ export function UniversitiesPage() {
       {/* Main content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {filters.viewMode === 'map' ? (
-          <MapView />
+          <Suspense fallback={<MapLoadingFallback />}>
+            <MapView />
+          </Suspense>
         ) : (
           <div className="flex gap-6">
             {/* Sidebar */}

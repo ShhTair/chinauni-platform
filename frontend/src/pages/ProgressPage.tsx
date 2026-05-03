@@ -14,6 +14,9 @@ const FEATURES = [
   { group: 'Universities', name: 'Detail Page', status: 'done', note: 'Real images added to DB, Tabs and Hero sections populated' },
   { group: 'Universities', name: 'Anti-copy Protection', status: 'done', note: 'Right-click and text-selection disabled via protection.ts' },
   { group: 'UI/UX', name: 'Loading States & Toasts', status: 'done', note: 'Skeleton loaders and toast notifications added' },
+  { group: 'UI/UX', name: 'Dark / Light Theme', status: 'in_progress', note: 'CSS variable RGB tokens wired to Tailwind — full dark mode pass in progress' },
+  { group: 'UI/UX', name: 'Design System / Brandbook', status: 'in_progress', note: 'Full component showcase at /brandbook — all tokens, typography, badges, toasts, modals, skeletons' },
+  { group: 'Infrastructure', name: 'Vercel SPA routing fix', status: 'done', note: 'vercel.json rewrites added; /brandbook, /progress, /handover now load correctly' },
   { group: 'Forms', name: 'Intake Form (Stepper)', status: 'in_progress', note: 'UI built, needs connection to backend /api/intake' },
   { group: 'Admin', name: 'Moderator Dashboard', status: 'in_progress', note: 'Submissions/Reviews approval logic pending' },
 ];

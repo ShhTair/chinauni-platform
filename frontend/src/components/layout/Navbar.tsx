@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, User, LogOut, Settings, ChevronDown } from 'lucide-react'
+import { Menu, X, User, LogOut, Settings, ChevronDown, Palette } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth'
 import { useCompareStore } from '@/stores/compare'
 import ThemeLangToggle from './ThemeLangToggle'
@@ -80,6 +80,18 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
+            <Link
+              to="/brandbook"
+              title="Design System"
+              className={cn(
+                'hidden md:flex items-center justify-center w-8 h-8 rounded-lg transition-colors',
+                location.pathname === '/brandbook'
+                  ? 'text-accent bg-accent/10'
+                  : 'text-ink-faint hover:text-ink hover:bg-bg'
+              )}
+            >
+              <Palette size={15} />
+            </Link>
             <ThemeLangToggle />
             {/* Compare badge */}
             {selectedIds.length > 0 && (

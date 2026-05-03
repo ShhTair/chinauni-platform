@@ -5,28 +5,54 @@
 @tailwind utilities;
 
 :root {
+  /* ── Brand ── */
   --clr-accent:     #C0392B;
   --clr-accent-2:   #E8A000;
+
+  /* ── Semantic – RGB channels (no #, just R G B) so Tailwind opacity works ── */
+  --rgb-bg:           248 247 244;   /* #F8F7F4 */
+  --rgb-bg-warm:      240 237 231;   /* #F0EDE7 */
+  --rgb-surface:      255 255 255;   /* #FFFFFF */
+  --rgb-border:       226 223 217;   /* #E2DFD9 */
+  --rgb-border-strong:200 196 188;   /* #C8C4BC */
+  --rgb-text:         26  26  26;    /* #1A1A1A */
+  --rgb-text-muted:   107 107 107;   /* #6B6B6B */
+  --rgb-text-faint:   155 155 155;   /* #9B9B9B */
+
+  /* ── Hex aliases kept for raw CSS usage ── */
   --clr-bg:         #F8F7F4;
   --clr-surface:    #FFFFFF;
   --clr-border:     #E2DFD9;
   --clr-text:       #1A1A1A;
   --clr-text-muted: #6B6B6B;
-  --clr-c9:         #7C3AED;
-  --clr-985:        #1D4ED8;
-  --clr-211:        #0369A1;
-  --clr-hk:         #047857;
-  --clr-us:         #B45309;
-  --clr-uk:         #9F1239;
+
+  /* ── League ── */
+  --clr-c9:  #7C3AED;
+  --clr-985: #1D4ED8;
+  --clr-211: #0369A1;
+  --clr-hk:  #047857;
+  --clr-us:  #B45309;
+  --clr-uk:  #9F1239;
+
   --radius: 0.5rem;
 }
 
+/* ── Dark mode overrides ── */
 .dark {
+  --rgb-bg:           10  15  28;    /* #0A0F1C */
+  --rgb-bg-warm:      17  24  39;    /* #111827 */
+  --rgb-surface:      21  28  44;    /* #151C2C */
+  --rgb-border:       42  50  71;    /* #2A3247 */
+  --rgb-border-strong:61  77 107;    /* #3D4D6B */
+  --rgb-text:         240 238 232;   /* #F0EEE8 */
+  --rgb-text-muted:   139 155 184;   /* #8B9BB8 */
+  --rgb-text-faint:   91 107 136;    /* #5B6B88 */
+
   --clr-bg:         #0A0F1C;
   --clr-surface:    #151C2C;
   --clr-border:     #2A3247;
-  --clr-text:       #F8F7F4;
-  --clr-text-muted: #9B9B9B;
+  --clr-text:       #F0EEE8;
+  --clr-text-muted: #8B9BB8;
 }
 
 
@@ -192,3 +218,5 @@ h1, h2, h3 {
 /* ── Portal status ── */
 .portal-open  { color: #16a34a; background: #f0fdf4; border-color: #86efac; }
 .portal-closed{ color: #9f1239; background: #fff1f2; border-color: #fecdd3; }
+.dark .portal-open  { color: #4ade80; background: rgba(22,163,74,0.12); border-color: rgba(134,239,172,0.3); }
+.dark .portal-closed{ color: #fb7185; background: rgba(159,18,57,0.12); border-color: rgba(254,205,211,0.3); }

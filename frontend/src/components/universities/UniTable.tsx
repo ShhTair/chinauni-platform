@@ -77,7 +77,7 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
         cell: (info) => (
           <div className="flex items-center gap-3 min-w-[250px]">
             {info.row.original.logo_url && (
-              <img src={info.row.original.logo_url} alt="" className="w-8 h-8 object-contain rounded flex-shrink-0 bg-white" />
+              <img src={info.row.original.logo_url} alt="" className="w-8 h-8 object-contain rounded flex-shrink-0 bg-surface" />
             )}
             <div>
               <Link to={`/universities/${info.row.original.slug}`} className="font-bold text-sm text-ink hover:text-accent transition-colors">

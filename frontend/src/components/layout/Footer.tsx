@@ -34,13 +34,31 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resources */}
+                    {/* Resources */}
           <div>
             <h4 className="text-xs font-semibold text-ink uppercase tracking-wider mb-3">Ресурсы</h4>
             <ul className="space-y-2">
               {[
                 { href: '/about', label: 'О проекте' },
                 { href: '/account', label: 'Личный кабинет' },
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link to={l.href} className="text-sm text-ink-muted hover:text-accent transition-colors">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Dev Docs */}
+          <div>
+            <h4 className="text-xs font-semibold text-ink uppercase tracking-wider mb-3">Dev Docs</h4>
+            <ul className="space-y-2">
+              {[
+                { href: '/progress', label: 'Progress Tracker' },
+                { href: '/brandbook', label: 'Brandbook' },
+                { href: '/handover', label: 'Handover Notes' },
               ].map((l) => (
                 <li key={l.href}>
                   <Link to={l.href} className="text-sm text-ink-muted hover:text-accent transition-colors">

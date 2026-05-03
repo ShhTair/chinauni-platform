@@ -73,7 +73,7 @@ export function UniversitiesPage() {
     <>
       {/* Header */}
       <div className="bg-surface border-b border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        <div className={`mx-auto px-4 sm:px-6 py-8 transition-all duration-300 ${filters.isFullWidth ? "max-w-[96%]" : "max-w-7xl"}`}>
           <div className="flex items-end justify-between">
             <div>
               <h1 className="font-display text-4xl text-ink">Университеты</h1>
@@ -129,7 +129,7 @@ export function UniversitiesPage() {
       </div>
 
       {/* Main content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div className={`mx-auto px-4 sm:px-6 py-8 transition-all duration-300 ${filters.isFullWidth ? "max-w-[96%]" : "max-w-7xl"}`}>
         {filters.viewMode === 'map' ? (
           <Suspense fallback={<MapLoadingFallback />}>
             <MapView />

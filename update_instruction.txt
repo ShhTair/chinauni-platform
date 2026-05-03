@@ -1,0 +1,38 @@
+Tasks for Claude Code (Phase 4: Advanced Filters, Map UI, Table Customization & Expansions):
+
+1. **Map View Enhancements (`react-leaflet` in `MapView.tsx`)**:
+   - Make the map larger (cover more screen height).
+   - Change the tile layer to English/International instead of Chinese (e.g., use CartoDB Positron or a Mapbox English style, and add a Satellite view toggle). Remove excessive road details if possible.
+   - Show university names directly above markers (using DivIcon or Tooltips that are permanently visible).
+   - Show the summary card on `hover` (mouseover) instead of just on click.
+   - Implement the exact same sidebar filters as the Table view inside the Map view.
+
+2. **Catalog Filters (UniversitiesPage & Sidebar)**:
+   - Make filters multi-select (e.g., allow selecting multiple provinces, leagues, fields).
+   - Add new filter categories: `majors` and `fields` (so users can filter universities that offer specific majors).
+   - Improve the UI/UX of the filter sidebar (make it collapsible, clearer multi-select pills).
+
+3. **Database & Assets Expansion**:
+   - Seed missing university cover images and logos (use actual campus photos instead of generic cityscapes).
+   - Expand the universities seed list beyond the initial 70 to include more top/popular Chinese universities.
+
+4. **Table View Customization (`UniTable.tsx`)**:
+   - Allow column reordering and hiding (customizable templates saved to localStorage).
+   - Allow users to add custom user-defined columns (e.g., "My Notes", "My Target Majors").
+   - For the "Majors" column: users should be able to click a cell, open a searchable dropdown of majors *specific to that university*, select multiple tags, and save them. 
+   - Each major tag/pill should have a clickable link icon (chain) pointing to the official major URL, and an 'x' to remove it (when in edit mode).
+   - Ensure all URL fields from the DB (`url_portal`, `url_majors`, `url_scholarships`) have clickable link icons within the table cells where relevant.
+
+5. **Layout & Theming**:
+   - Add a "Full Width / Centered" toggle for the catalog layout.
+   - Add a global Dark / Light theme toggle (sync with Tailwind `dark:` classes).
+   - Change the default UI language to English. Add a language switcher (EN / RU / KZ) next to the theme toggle.
+
+6. **New Page: Majors Catalog**:
+   - Create a new route `/majors` next to `/universities`.
+   - This page should focus on searching by Field / Major, displaying which universities offer them.
+
+7. **Documentation Fixes**:
+   - Fix broken links to `/progress`, `/brandbook`, and `/handover` (ensure they are accessible from the Footer or Navbar).
+   - Update `BrandbookPage` to be extremely detailed (show all UI elements, buttons, inputs).
+   - Update `ProgressPage` to reflect these new tasks (mark them as todo/in_progress) and expand on future features.

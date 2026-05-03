@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, User, LogOut, Settings, ChevronDown } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth'
 import { useCompareStore } from '@/stores/compare'
+import ThemeLangToggle from './ThemeLangToggle'
 import { AuthModal } from './AuthModal'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
@@ -78,6 +79,7 @@ export function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-3">
+            <ThemeLangToggle />
             {/* Compare badge */}
             {selectedIds.length > 0 && (
               <motion.div

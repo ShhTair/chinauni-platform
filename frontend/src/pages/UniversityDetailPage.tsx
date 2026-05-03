@@ -112,7 +112,7 @@ export function UniversityDetailPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => uni && toggle(uni.id)}
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                className="bg-surface/10 border-white/30 text-white hover:bg-surface/20"
               >
                 {selected ? '✓ В сравнении' : '⚖ Сравнить'}
               </Button>
@@ -282,7 +282,7 @@ function OverviewTab({ uni, isAuth, onAuth }: { uni: University; isAuth: boolean
           <div className="bg-accent rounded-2xl p-5 text-white text-center hover:bg-accent-dark transition-colors">
             <p className="font-display text-xl mb-1">Подать заявку</p>
             <p className="text-white/70 text-xs mb-3">Заполни анкету — помоги другим студентам</p>
-            <Button className="bg-white text-accent hover:bg-white/90 w-full" size="sm">
+            <Button className="bg-surface text-accent hover:bg-surface/90 w-full" size="sm">
               Открыть анкету <ChevronRight size={14} />
             </Button>
           </div>

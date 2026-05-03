@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, User, LogOut, Settings, ChevronDown, Palette } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth'
@@ -10,15 +11,16 @@ import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
 const NAV_LINKS = [
-  { href: '/universities', label: 'Университеты' },
-  { href: '/majors', label: 'Специальности' },
-  { href: '/scholarships', label: 'Стипендии' },
-  { href: '/deadlines', label: 'Дедлайны' },
-  { href: '/about', label: 'О проекте' },
+  { href: '/universities', translationKey: 'universities' },
+  { href: '/majors', translationKey: 'majors' },
+  { href: '/scholarships', translationKey: 'scholarships' },
+  { href: '/deadlines', translationKey: 'deadlines' },
+  { href: '/about', translationKey: 'about' },
 ]
 
 export function Navbar() {
   const { user, logout } = useAuthStore()
+  const { t } = useTranslation()
   const { selectedIds } = useCompareStore()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [authOpen, setAuthOpen] = useState(false)
@@ -73,7 +75,7 @@ export function Navbar() {
                     : 'text-ink-muted hover:text-ink'
                 )}
               >
-                {link.label}
+                {link.translationKey ? t(link.translationKey) : link.label}
               </Link>
             ))}
           </nav>
@@ -101,7 +103,7 @@ export function Navbar() {
               >
                 <Link to="/compare">
                   <Button variant="outline" size="sm" className="hidden sm:flex">
-                    Сравнить
+                    {t('compare', 'Сравнить')}
                     <span className="ml-1 w-5 h-5 flex items-center justify-center rounded-full bg-accent text-white text-xs font-bold">
                       {selectedIds.length}
                     </span>
@@ -158,7 +160,7 @@ export function Navbar() {
               </div>
             ) : (
               <Button size="sm" onClick={() => setAuthOpen(true)}>
-                Войти
+                {t('login')}
               </Button>
             )}
 
@@ -189,7 +191,7 @@ export function Navbar() {
                   to={link.href}
                   className="block px-3 py-2 rounded-lg text-sm font-medium text-ink hover:bg-bg transition-colors"
                 >
-                  {link.label}
+                  {link.translationKey ? t(link.translationKey) : link.label}
                 </Link>
               ))}
               {selectedIds.length > 0 && (
@@ -197,7 +199,7 @@ export function Navbar() {
                   to="/compare"
                   className="block px-3 py-2 rounded-lg text-sm font-medium text-accent hover:bg-bg transition-colors"
                 >
-                  Сравнить ({selectedIds.length})
+                  {t('compare', 'Сравнить')} ({selectedIds.length})
                 </Link>
               )}
             </div>

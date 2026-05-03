@@ -110,7 +110,7 @@ export function AccountPage() {
               onClick={() => setIsPublic(!isPublic)}
               className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${isPublic ? 'bg-accent' : 'bg-border'}`}
             >
-              <span className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${isPublic ? 'translate-x-7' : 'translate-x-1'}`} />
+              <span className={`absolute top-1 w-4 h-4 bg-surface rounded-full shadow transition-transform duration-200 ${isPublic ? 'translate-x-7' : 'translate-x-1'}`} />
             </button>
           </div>
 

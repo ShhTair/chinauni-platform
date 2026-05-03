@@ -83,7 +83,7 @@ export function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 border border-white/20 rounded-full px-4 py-1.5 text-white/60 text-xs mb-8 bg-white/5 backdrop-blur-sm"
+              className="inline-flex items-center gap-2 border border-white/20 rounded-full px-4 py-1.5 text-white/60 text-xs mb-8 bg-surface/5 backdrop-blur-sm"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
               Платформа для CIS студентов
@@ -127,7 +127,7 @@ export function HomePage() {
               <Button
                 size="lg"
                 variant="ghost"
-                className="text-white/70 hover:text-white hover:bg-white/10"
+                className="text-white/70 hover:text-white hover:bg-surface/10"
                 onClick={() => setAuthOpen(true)}
               >
                 Войти бесплатно
@@ -307,7 +307,7 @@ export function HomePage() {
             </p>
             <Button
               size="lg"
-              className="bg-white text-accent hover:bg-white/90 shadow-lg"
+              className="bg-surface text-accent hover:bg-surface/90 shadow-lg"
               onClick={() => setAuthOpen(true)}
             >
               Начать бесплатно <ArrowRight size={18} />

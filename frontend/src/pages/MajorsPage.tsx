@@ -104,7 +104,7 @@ export default function MajorsPage() {
                       className="group p-4 rounded-xl border border-border hover:border-accent hover:shadow-sm transition-all flex items-center gap-4"
                     >
                       {uni.logo_url ? (
-                        <img src={uni.logo_url} alt="" className="w-12 h-12 object-contain rounded-lg bg-white" />
+                        <img src={uni.logo_url} alt="" className="w-12 h-12 object-contain rounded-lg bg-surface" />
                       ) : (
                         <div className="w-12 h-12 bg-bg flex items-center justify-center rounded-lg">
                           <Building2 size={20} className="text-ink-muted" />

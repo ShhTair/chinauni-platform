@@ -571,7 +571,7 @@ function Step4({ form, set, error }: {
           )}
         >
           <span className={cn(
-            'absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+            'absolute top-1 w-4 h-4 bg-surface rounded-full shadow transition-transform duration-200',
             form.is_public ? 'translate-x-7' : 'translate-x-1'
           )} />
         </button>

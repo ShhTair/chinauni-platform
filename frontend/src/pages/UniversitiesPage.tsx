@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useState, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
@@ -26,18 +27,18 @@ function MapLoadingFallback() {
     <div className="relative rounded-2xl overflow-hidden">
       <Skeleton className="h-[500px] w-full" />
       <div className="absolute inset-0 flex items-center justify-center">
-        <p className="text-ink-muted text-sm">Загрузка карты...</p>
+        <p className="text-ink-muted text-sm">{t('loading_map', 'Загрузка карты...')}</p>
       </div>
     </div>
   )
 }
 
 const VIEW_BUTTONS: { mode: ViewMode; icon: React.ElementType; label: string }[] = [
-  { mode: 'grid', icon: LayoutGrid, label: 'Сетка' },
-  { mode: 'list', icon: List, label: 'Список' },
-  { mode: 'table', icon: Table2, label: 'Таблица' },
-  { mode: 'map', icon: Map, label: 'Карта' },
-  { mode: 'timeline', icon: GitBranch, label: 'Тайм лайн' },
+  { mode: 'grid', icon: LayoutGrid, label: t('grid', 'Сетка') },
+  { mode: 'list', icon: List, label: t('list', 'Список') },
+  { mode: 'table', icon: Table2, label: t('table', 'Таблица') },
+  { mode: 'map', icon: Map, label: t('map_label', 'Карта') },
+  { mode: 'timeline', icon: GitBranch, label: t('timeline', 'Тайм лайн') },
 ]
 
 export function UniversitiesPage() {
@@ -193,7 +194,7 @@ export function UniversitiesPage() {
                 )
               ) : error ? (
                 <div className="text-center py-20">
-                  <p className="text-ink-muted">Ошибка загрузки. Попробуйте снова.</p>
+                  <p className="text-ink-muted">{t('load_error', 'Ошибка загрузки. Попробуйте снова.')}</p>
                 </div>
               ) : (
                 <>
@@ -233,13 +234,13 @@ export function UniversitiesPage() {
                       className="mt-8 text-center bg-surface rounded-2xl border border-border p-8"
                     >
                       <p className="font-display text-2xl text-ink mb-2">
-                        Видите только часть базы
+                        {t('see_partial_db', 'Видите только часть базы')}
                       </p>
                       <p className="text-ink-muted mb-4">
-                        Войдите чтобы увидеть все {total}+ университетов, ссылки на порталы и полные данные
+                        {t('login_to_see_all', 'Войдите чтобы увидеть все')} {total}+ {t('universities_portals_data', 'университетов, ссылки на порталы и полные данные')}
                       </p>
                       <Button onClick={() => setAuthOpen(true)}>
-                        Войти бесплатно
+                        {t('login_free', 'Войти бесплатно')}
                       </Button>
                     </motion.div>
                   )}

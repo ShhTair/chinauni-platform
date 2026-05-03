@@ -73,59 +73,95 @@ export function UniversitiesPage() {
     <>
       {/* Header */}
       <div className="bg-surface border-b border-border">
-        <div className={`mx-auto px-4 sm:px-6 py-8 transition-all duration-300 ${filters.isFullWidth ? "max-w-[96%]" : "max-w-7xl"}`}>
-          <div className="flex items-end justify-between">
-            <div>
-              <h1 className="font-display text-4xl text-ink">Университеты</h1>
-              <p className="text-ink-muted mt-1">
-                {isLoading ? 'Загрузка...' : `${total} университетов`}
-                {!isAuth && ' · войдите чтобы увидеть все'}
-              </p>
+              <div className={`mx-auto px-4 sm:px-6 py-8 transition-all duration-300 ${filters.isFullWidth ? "max-w-[96%]" : "max-w-7xl"}`}>
+        <div className="flex gap-6">
+          {/* Sidebar */}
+          <aside className="hidden md:block w-64 flex-shrink-0">
+            <div className="sticky top-20">
+              <FilterSidebar />
             </div>
+          </aside>
 
-            {/* View toggles */}
-            <div className="hidden sm:flex items-center bg-bg rounded-xl p-1 gap-0.5">
-              {VIEW_BUTTONS.map(({ mode, icon: Icon, label }) => (
-                <button
-                  key={mode}
-                  onClick={() => filters.setViewMode(mode)}
-                  title={label}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-150 ${
-                    filters.viewMode === mode
-                      ? 'bg-surface text-ink shadow-sm'
-                      : 'text-ink-muted hover:text-ink'
-                  }`}
-                >
-                  <Icon size={14} />
-                  <span className="hidden lg:inline">{label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            {filters.viewMode === 'map' ? (
+              <Suspense fallback={<MapLoadingFallback />}>
+                <MapView />
+              </Suspense>
+            ) : (
+              <>
+                {isLoading ? (
+                  filters.viewMode === 'list' ? (
+                    <div className="space-y-3">
+                      {Array.from({ length: 8 }).map((_, i) => <UniCardListSkeleton key={i} />)}
+                    </div>
+                  ) : filters.viewMode === 'table' ? (
+                    <div className="space-y-4">
+                      <Skeleton className="h-12 w-full" />
+                      {Array.from({ length: 10 }).map((_, i) => <Skeleton key={i} className="h-16 w-full" />)}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                      {Array.from({ length: 9 }).map((_, i) => <UniCardGridSkeleton key={i} />)}
+                    </div>
+                  )
+                ) : error ? (
+                  <div className="text-red-500 p-4 border border-red-200 rounded-lg bg-red-50">
+                    Failed to load universities.
+                  </div>
+                ) : (
+                  <>
+                    {/* View Switcher */}
+                    {filters.viewMode === 'grid' && (
+                      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {universities.map(u => <UniCardGrid key={u.id} uni={u} />)}
+                      </div>
+                    )}
+                    {filters.viewMode === 'list' && (
+                      <div className="space-y-3">
+                        {universities.map(u => <UniCardList key={u.id} uni={u} />)}
+                      </div>
+                    )}
+                    {filters.viewMode === 'table' && (
+                      <UniTable
+                        universities={universities}
+                        isAuth={!!user}
+                        onAuthRequired={() => setAuthOpen(true)}
+                      />
+                    )}
+                    {filters.viewMode === 'timeline' && (
+                      <TimelineView universities={universities} />
+                    )}
 
-          {/* Mobile view + filter buttons */}
-          <div className="flex items-center gap-2 mt-4 sm:hidden">
-            <button
-              onClick={() => setMobileSidebarOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-bg rounded-xl text-sm font-medium text-ink-muted border border-border"
-            >
-              <SlidersHorizontal size={14} /> Фильтры
-            </button>
-            <div className="flex items-center bg-bg rounded-xl p-1 gap-0.5 ml-auto">
-              {VIEW_BUTTONS.slice(0, 4).map(({ mode, icon: Icon }) => (
-                <button
-                  key={mode}
-                  onClick={() => filters.setViewMode(mode)}
-                  className={`p-2 rounded-lg transition-all ${
-                    filters.viewMode === mode ? 'bg-surface text-ink shadow-sm' : 'text-ink-muted'
-                  }`}
-                >
-                  <Icon size={14} />
-                </button>
-              ))}
-            </div>
+                    {/* Pagination */}
+                    {data?.data.pages > 1 && (
+                      <div className="mt-8 flex justify-center items-center gap-4">
+                        <Button
+                          variant="outline"
+                          disabled={filters.page === 1}
+                          onClick={() => filters.prevPage()}
+                        >
+                          <ChevronLeft size={18} /> Prev
+                        </Button>
+                        <span className="font-bold text-sm text-ink-muted">
+                          {filters.page} / {data.data.pages}
+                        </span>
+                        <Button
+                          variant="outline"
+                          disabled={filters.page === data.data.pages}
+                          onClick={() => filters.nextPage()}
+                        >
+                          Next <ChevronRight size={18} />
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
+      </div>
       </div>
 
       {/* Main content */}

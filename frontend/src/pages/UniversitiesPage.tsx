@@ -27,21 +27,22 @@ function MapLoadingFallback() {
     <div className="relative rounded-2xl overflow-hidden">
       <Skeleton className="h-[500px] w-full" />
       <div className="absolute inset-0 flex items-center justify-center">
-        <p className="text-ink-muted text-sm">{t('loading_map', 'Загрузка карты...')}</p>
+        <p className="text-ink-muted text-sm">Загрузка карты...</p>
       </div>
     </div>
   )
 }
 
-const VIEW_BUTTONS: { mode: ViewMode; icon: React.ElementType; label: string }[] = [
-  { mode: 'grid', icon: LayoutGrid, label: t('grid', 'Сетка') },
-  { mode: 'list', icon: List, label: t('list', 'Список') },
-  { mode: 'table', icon: Table2, label: t('table', 'Таблица') },
-  { mode: 'map', icon: Map, label: t('map_label', 'Карта') },
-  { mode: 'timeline', icon: GitBranch, label: t('timeline', 'Тайм лайн') },
+const VIEW_BUTTONS: { mode: ViewMode; icon: React.ElementType; translationKey: string; fallback: string }[] = [
+  { mode: 'grid', icon: LayoutGrid, translationKey: 'grid', fallback: 'Сетка' },
+  { mode: 'list', icon: List, translationKey: 'list', fallback: 'Список' },
+  { mode: 'table', icon: Table2, translationKey: 'table', fallback: 'Таблица' },
+  { mode: 'map', icon: Map, translationKey: 'map_label', fallback: 'Карта' },
+  { mode: 'timeline', icon: GitBranch, translationKey: 'timeline', fallback: 'Тайм лайн' },
 ]
 
 export function UniversitiesPage() {
+  const { t } = useTranslation();
   const filters = useFiltersStore()
   const { user } = useAuthStore()
   const [authOpen, setAuthOpen] = useState(false)

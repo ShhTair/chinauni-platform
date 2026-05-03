@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
-import { X, SlidersHorizontal, Check } from 'lucide-react'
+import { X, SlidersHorizontal, Check, Search } from 'lucide-react'
 import { useFiltersStore } from '@/stores/filters'
-import { Select } from '@/components/ui/Input'
+import { Select, Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { clsx } from 'clsx'
 
@@ -69,6 +69,19 @@ export function FilterSidebar({ mobile, onClose }: FilterSidebarProps) {
       </div>
 
       <div className="space-y-8 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+
+      <div className="space-y-4">
+        {/* Search */}
+        <div className="relative">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
+          <Input 
+            value={filters.search}
+            onChange={(e) => filters.setFilter('search', e.target.value)}
+            placeholder="Search universities..."
+            className="pl-9 h-10 w-full"
+          />
+        </div>
+        
         
         {/* Leagues */}
         <div>

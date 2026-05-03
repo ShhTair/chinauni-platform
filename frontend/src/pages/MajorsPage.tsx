@@ -26,7 +26,7 @@ export default function MajorsPage() {
 
   // Filter universities based on selected field or search
   const filteredUnis = useMemo(() => {
-    return universities.filter(uni => {
+    return universities.filter((uni: any) => {
       // Mock search since we don't have major details in the brief list
       if (search && !uni.name.toLowerCase().includes(search.toLowerCase())) return false
       return true
@@ -97,7 +97,7 @@ export default function MajorsPage() {
                 </div>
               ) : (
                 <div className="grid gap-4">
-                  {filteredUnis.length > 0 ? filteredUnis.map(uni => (
+                  {filteredUnis.length > 0 ? filteredUnis.map((uni: any) => (
                     <Link 
                       key={uni.id} 
                       to={`/universities/${uni.slug}`}

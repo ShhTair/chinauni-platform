@@ -48,12 +48,12 @@ export function UniversitiesPage() {
 
   const queryParams = {
     search: filters.search || undefined,
-    province: filters.province || undefined,
-    league: filters.league || undefined,
+    province: filters.provinces.length > 0 ? filters.provinces.join(',') : undefined,
+    league: filters.leagues.length > 0 ? filters.leagues.join(',') : undefined,
     english_ug: filters.english_ug || undefined,
     prestige_min: filters.prestige_min || undefined,
     prestige_max: filters.prestige_max || undefined,
-    diploma_type: filters.diploma_type || undefined,
+    diploma_type: filters.diploma_types.length > 0 ? filters.diploma_types.join(',') : undefined,
     sort: filters.sort,
     page: filters.page,
     limit: 24,
@@ -144,11 +144,11 @@ export function UniversitiesPage() {
                           <ChevronLeft size={18} /> Prev
                         </Button>
                         <span className="font-bold text-sm text-ink-muted">
-                          {filters.page} / {data.data.pages}
+                          {filters.page} / {data?.data?.pages}
                         </span>
                         <Button
                           variant="outline"
-                          disabled={filters.page === data.data.pages}
+                          disabled={filters.page === data?.data?.pages}
                           onClick={() => filters.nextPage()}
                         >
                           Next <ChevronRight size={18} />

@@ -40,6 +40,23 @@ export default function DeveloperHandover() {
           </p>
         </div>
 
+        
+        <div className="bg-surface p-8 rounded-2xl border border-border space-y-4">
+          <div className="flex items-center gap-3 border-b border-border pb-4 mb-6">
+            <Terminal className="text-purple-600" />
+            <h2 className="text-2xl font-bold">Secrets & Repository</h2>
+          </div>
+          <p>
+            The project is tracked in GitHub. You can push your changes to trigger automatic deployments.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 mt-4 font-mono text-sm text-text-muted">
+            <li>GitHub Repo: <code>ShhTair/chinauni-platform</code></li>
+            <li>Supabase Password (if manual migration needed): <code>3Sv1jVV9FSxbpD6D</code></li>
+            <li>Supabase URI: <code>postgresql://postgres.ehykmdtsfoiezwswvdll:3Sv1jVV9FSxbpD6D@aws-1-ap-south-1.pooler.supabase.com:6543/postgres</code></li>
+            <li>Vercel Secrets: Already mapped via <code>vercel env</code>, do not hardcode in production.</li>
+          </ul>
+        </div>
+
         <div className="bg-surface p-8 rounded-2xl border border-border space-y-4">
           <div className="flex items-center gap-3 border-b border-border pb-4 mb-6">
             <Terminal className="text-purple-600" />

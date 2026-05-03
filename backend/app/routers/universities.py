@@ -88,9 +88,44 @@ async def list_universities(
 
 
 @router.get("/map", response_model=List[UniversityMapItem])
-async def universities_map(db: Session = Depends(get_db)):
-    unis = db.query(University).filter(University.coordinates.isnot(None)).all()
-    return unis
+async def universities_map(
+    db: Session = Depends(get_db),
+    province: Optional[str] = None,
+    league: Optional[str] = None,
+    english_ug: Optional[str] = None,
+    prestige_min: Optional[int] = None,
+    prestige_max: Optional[int] = None,
+    diploma_type: Optional[str] = None,
+    search: Optional[str] = None,
+):
+    query = db.query(University).filter(University.coordinates.isnot(None))
+
+    if province:
+        provs = [p.strip() for p in province.split(",")]
+        query = query.filter(University.province.in_(provs))
+    if league:
+        leagues = [l.strip() for l in league.split(",")]
+        query = query.filter(University.league.in_(leagues))
+    if english_ug:
+        query = query.filter(University.english_ug == english_ug)
+    if prestige_min is not None:
+        query = query.filter(University.prestige_stars >= prestige_min)
+    if prestige_max is not None:
+        query = query.filter(University.prestige_stars <= prestige_max)
+    if diploma_type:
+        dips = [d.strip() for d in diploma_type.split(",")]
+        query = query.filter(University.diploma_type.in_(dips))
+    if search:
+        query = query.filter(
+            or_(
+                University.name.ilike(f"%{search}%"),
+                University.name_cn.ilike(f"%{search}%"),
+                University.slug.ilike(f"%{search}%"),
+                University.city.ilike(f"%{search}%"),
+            )
+        )
+
+    return query.all()
 
 
 @router.get("/{slug}", response_model=UniversityDetail)

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { toast } from 'sonner'
 import { Modal } from '@/components/ui/Modal'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -35,6 +36,7 @@ export function AuthModal({ open, onClose, defaultTab = 'login' }: AuthModalProp
       } else {
         await register(data.email, data.password)
       }
+      toast.success(tab === 'login' ? 'Добро пожаловать! 👋' : 'Аккаунт создан ✓')
       reset()
       onClose()
     } catch (err: unknown) {

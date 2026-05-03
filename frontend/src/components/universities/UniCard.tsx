@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { MapPin, Globe, BookOpen, Calendar, CheckSquare, Square } from 'lucide-react'
+import { MapPin, Globe, BookOpen, CheckSquare, Square } from 'lucide-react'
+import { toast } from 'sonner'
 import { Stars, LeagueBadge, PortalBadge, TierBadge } from '@/components/ui/Badge'
 import { useCompareStore } from '@/stores/compare'
-import { formatCNY, formatUSD, formatDate, cn } from '@/lib/utils'
+import { formatCNY, formatUSD, cn } from '@/lib/utils'
 import type { University } from '@/types'
 
 // ── Grid Card ────────────────────��─────────────────────────��───────────────
@@ -27,7 +28,13 @@ export function UniCardGrid({ uni }: { uni: University }) {
     >
       {/* Compare checkbox */}
       <button
-        onClick={(e) => { e.preventDefault(); toggle(uni.id) }}
+        onClick={(e) => {
+          e.preventDefault()
+          const adding = !isSelected(uni.id)
+          toggle(uni.id)
+          if (adding) toast.success(`${uni.name} добавлен в сравнение`, { duration: 2000 })
+          else toast(`Убран из сравнения`, { duration: 1500 })
+        }}
         className="absolute top-3 right-3 z-10 p-1 rounded-lg bg-surface/90 backdrop-blur-sm hover:bg-surface transition-colors"
       >
         {selected
@@ -178,7 +185,12 @@ export function UniCardList({ uni }: { uni: University }) {
 
       <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border">
         <button
-          onClick={() => toggle(uni.id)}
+          onClick={() => {
+            const adding = !isSelected(uni.id)
+            toggle(uni.id)
+            if (adding) toast.success(`${uni.name} добавлен в сравнение`, { duration: 2000 })
+            else toast(`Убран из сравнения`, { duration: 1500 })
+          }}
           className="text-xs text-ink-muted hover:text-accent flex items-center gap-1 transition-colors"
         >
           {selected ? <CheckSquare size={13} className="text-accent" /> : <Square size={13} />}

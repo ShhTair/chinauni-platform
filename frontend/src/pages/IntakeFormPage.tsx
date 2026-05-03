@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronRight, ChevronLeft, Copy } from 'lucide-react'
+import { toast } from 'sonner'
 import { universitiesApi, intakeApi } from '@/lib/api'
 import { Input, Select, Textarea } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
@@ -151,8 +152,11 @@ export function IntakeFormPage() {
       }
       const res = await intakeApi.submit(slug!, payload)
       setResult(res.data)
+      toast.success('Анкета отправлена! Профиль создан ✓')
     } catch (e: unknown) {
-      setError((e as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Ошибка при отправке')
+      const msg = (e as { response?: { data?: { detail?: string } } })?.response?.data?.detail || 'Ошибка при отправке'
+      setError(msg)
+      toast.error(msg)
     } finally {
       setSubmitting(false)
     }

@@ -15,6 +15,7 @@ import { MapView } from '@/components/map/MapView'
 import { TimelineView } from '@/components/universities/TimelineView'
 import { AuthModal } from '@/components/layout/AuthModal'
 import { Button } from '@/components/ui/Button'
+import { UniCardGridSkeleton, UniCardListSkeleton } from '@/components/ui/Skeleton'
 import type { University } from '@/types'
 
 const VIEW_BUTTONS: { mode: ViewMode; icon: React.ElementType; label: string }[] = [
@@ -129,11 +130,15 @@ export function UniversitiesPage() {
             {/* Content */}
             <div className="flex-1 min-w-0">
               {isLoading ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <div key={i} className="bg-surface rounded-2xl h-72 animate-pulse" />
-                  ))}
-                </div>
+                filters.viewMode === 'list' ? (
+                  <div className="space-y-3">
+                    {Array.from({ length: 8 }).map((_, i) => <UniCardListSkeleton key={i} />)}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {Array.from({ length: 6 }).map((_, i) => <UniCardGridSkeleton key={i} />)}
+                  </div>
+                )
               ) : error ? (
                 <div className="text-center py-20">
                   <p className="text-ink-muted">Ошибка загрузки. Попробуйте снова.</p>

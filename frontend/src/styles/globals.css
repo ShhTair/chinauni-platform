@@ -21,6 +21,15 @@
   --radius: 0.5rem;
 }
 
+.dark {
+  --clr-bg:         #0A0F1C;
+  --clr-surface:    #151C2C;
+  --clr-border:     #2A3247;
+  --clr-text:       #F8F7F4;
+  --clr-text-muted: #9B9B9B;
+}
+
+
 * {
   box-sizing: border-box;
   margin: 0;

@@ -148,39 +148,15 @@ export function FilterSidebar({ mobile, onClose }: FilterSidebarProps) {
         <div className="grid grid-cols-1 gap-5 pt-2">
           <div>
             <label className="block text-xs font-bold text-ink-muted mb-2 uppercase tracking-wider">English Undergrad</label>
-            <Select
-              value={filters.english_ug}
-              onChange={(e) => filters.setFilter('english_ug', e.target.value)}
-            >
-              <option value="">All</option>
-              <option value="yes">Yes (Fully English)</option>
-              <option value="partial">Partial</option>
-              <option value="no">No (Chinese only)</option>
-            </Select>
+            <Select value={filters.english_ug} onChange={(e) => filters.setFilter('english_ug', e.target.value)} options={[{value:'',label:'All'},{value:'yes',label:'Yes (Fully English)'},{value:'partial',label:'Partial'},{value:'no',label:'No (Chinese only)'}]} />
           </div>
 
           <div>
             <label className="block text-xs font-bold text-ink-muted mb-2 uppercase tracking-wider">Prestige (Stars)</label>
             <div className="flex items-center gap-2">
-              <Select
-                value={filters.prestige_min}
-                onChange={(e) => filters.setFilter('prestige_min', e.target.value)}
-              >
-                <option value="">Min</option>
-                {[1, 2, 3, 4, 5].map((v) => (
-                  <option key={`min-${v}`} value={v}>{v} ★</option>
-                ))}
-              </Select>
+              <Select value={filters.prestige_min} onChange={(e) => filters.setFilter('prestige_min', e.target.value)} options={[{value:'',label:'Min'},{value:'1',label:'1 ★'},{value:'2',label:'2 ★'},{value:'3',label:'3 ★'},{value:'4',label:'4 ★'},{value:'5',label:'5 ★'}]} />
               <span className="text-ink-faint">-</span>
-              <Select
-                value={filters.prestige_max}
-                onChange={(e) => filters.setFilter('prestige_max', e.target.value)}
-              >
-                <option value="">Max</option>
-                {[1, 2, 3, 4, 5].map((v) => (
-                  <option key={`max-${v}`} value={v}>{v} ★</option>
-                ))}
-              </Select>
+              <Select value={filters.prestige_max} onChange={(e) => filters.setFilter('prestige_max', e.target.value)} options={[{value:'',label:'Max'},{value:'1',label:'1 ★'},{value:'2',label:'2 ★'},{value:'3',label:'3 ★'},{value:'4',label:'4 ★'},{value:'5',label:'5 ★'}]} />
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 
 const NAV_LINKS = [
   { href: '/universities', label: 'Университеты' },
+  { href: '/majors', label: 'Специальности' },
   { href: '/scholarships', label: 'Стипендии' },
   { href: '/deadlines', label: 'Дедлайны' },
   { href: '/about', label: 'О проекте' },

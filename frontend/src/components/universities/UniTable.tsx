@@ -28,7 +28,6 @@ interface UniTableProps {
 
 const VISIBLE_WITHOUT_AUTH = 10
 
-// Custom hook for persisted state
 function usePersistedState<T>(key: string, defaultValue: T): [T, (val: T | ((prev: T) => T)) => void, boolean] {
   const [state, setState] = useState<T>(defaultValue)
   const [loaded, setLoaded] = useState(false)
@@ -51,19 +50,24 @@ function usePersistedState<T>(key: string, defaultValue: T): [T, (val: T | ((pre
   return [state, setPersistedState, loaded]
 }
 
+// Complex type for custom tag cells
+type CustomTag = { text: string; url?: string }
+type CustomFieldData = { type: 'text', value: string } | { type: 'tags', tags: CustomTag[] }
+
 export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps) {
   const [sorting, setSorting] = useState<SortingState>([])
   
-  // Persisted Table States
   const [columnVisibility, setColumnVisibility, visLoaded] = usePersistedState<VisibilityState>('table_visibility', {})
   const [columnOrder, setColumnOrder, orderLoaded] = usePersistedState<ColumnOrderState>('table_order', [])
   
-  // Custom user fields state (e.g. My Notes, Custom Majors)
-  const [customFields, setCustomFields, customLoaded] = usePersistedState<Record<string, Record<string, string>>>('table_custom_fields', {})
+  // Custom columns: name -> type
+  const [customColsDef, setCustomColsDef, colsLoaded] = usePersistedState<Record<string, 'text' | 'tags'>>('table_custom_defs', {})
+  // Custom data: uniId -> colName -> CustomFieldData
+  const [customFields, setCustomFields, customLoaded] = usePersistedState<Record<string, Record<string, CustomFieldData>>>('table_custom_fields_v2', {})
   
   const [showSettings, setShowSettings] = useState(false)
   const [newColumnName, setNewColumnName] = useState('')
-  const [customColumnsList, setCustomColumnsList, colsLoaded] = usePersistedState<string[]>('table_custom_cols_list', [])
+  const [newColumnType, setNewColumnType] = useState<'text'|'tags'>('text')
 
   const baseColumns = useMemo(
     () => [
@@ -151,39 +155,80 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
     []
   )
 
-  // Dynamically generate custom columns
   const columns = useMemo(() => {
-    const dynamicCols = customColumnsList.map(colName => 
-      col.accessor((row) => customFields[row.id]?.[colName] || '', {
+    const dynamicCols = Object.keys(customColsDef).map(colName => {
+      const type = customColsDef[colName]
+      return col.accessor((row) => customFields[row.id]?.[colName], {
         id: `custom_${colName}`,
         header: colName.toUpperCase(),
         cell: (info) => {
-          const val = info.getValue()
-          return (
-            <div className="group relative min-w-[150px]">
-              <input 
-                type="text" 
-                value={val}
-                placeholder="Add notes..."
-                onChange={(e) => {
-                  const newVal = e.target.value;
-                  setCustomFields(prev => ({
-                    ...prev,
-                    [info.row.original.id]: {
-                      ...(prev[info.row.original.id] || {}),
-                      [colName]: newVal
-                    }
-                  }))
-                }}
-                className="w-full bg-transparent border-b border-transparent group-hover:border-border focus:border-accent outline-none text-sm px-1 py-0.5 transition-colors font-medium"
-              />
-            </div>
-          )
+          const data = info.getValue()
+          const uniId = info.row.original.id
+
+          if (type === 'text') {
+            const val = data?.type === 'text' ? data.value : ''
+            return (
+              <div className="group relative min-w-[150px]">
+                <input 
+                  type="text" 
+                  value={val}
+                  placeholder="Add notes..."
+                  onChange={(e) => {
+                    setCustomFields(prev => ({
+                      ...prev, [uniId]: { ...(prev[uniId] || {}), [colName]: { type: 'text', value: e.target.value } }
+                    }))
+                  }}
+                  className="w-full bg-transparent border-b border-transparent group-hover:border-border focus:border-accent outline-none text-sm px-1 py-0.5 transition-colors font-medium"
+                />
+              </div>
+            )
+          } else {
+            // Tags mode
+            const tags = data?.type === 'tags' ? data.tags : []
+            return (
+              <div className="flex flex-wrap gap-1 min-w-[200px]">
+                {tags.map((tag, idx) => (
+                  <div key={idx} className="flex items-center gap-1 bg-surface border border-border rounded-md px-2 py-1 text-xs font-bold shadow-sm">
+                    {tag.url ? (
+                      <a href={tag.url} target="_blank" rel="noreferrer" className="text-accent hover:underline flex items-center gap-1">
+                        <LinkIcon size={10} /> {tag.text}
+                      </a>
+                    ) : (
+                      <span>{tag.text}</span>
+                    )}
+                    <button 
+                      onClick={() => {
+                        const newTags = [...tags]; newTags.splice(idx, 1);
+                        setCustomFields(prev => ({
+                          ...prev, [uniId]: { ...(prev[uniId] || {}), [colName]: { type: 'tags', tags: newTags } }
+                        }))
+                      }}
+                      className="ml-1 text-ink-muted hover:text-red-500"
+                    ><X size={12}/></button>
+                  </div>
+                ))}
+                <button 
+                  onClick={() => {
+                    const text = prompt(`Add a new tag for ${colName}:`)
+                    if (!text) return
+                    const url = prompt(`(Optional) URL for ${text}:`)
+                    const newTags = [...tags, { text, url: url || undefined }]
+                    setCustomFields(prev => ({
+                      ...prev, [uniId]: { ...(prev[uniId] || {}), [colName]: { type: 'tags', tags: newTags } }
+                    }))
+                  }}
+                  className="px-2 py-1 border border-dashed border-ink-muted/50 rounded-md text-ink-muted hover:text-accent hover:border-accent text-xs font-bold transition-colors flex items-center"
+                >
+                  <Plus size={12} /> ADD
+                </button>
+              </div>
+            )
+          }
         },
       })
-    )
+    })
     return [...baseColumns, ...dynamicCols]
-  }, [baseColumns, customColumnsList, customFields, setCustomFields])
+  }, [baseColumns, customColsDef, customFields, setCustomFields])
 
   const table = useReactTable({
     data: universities,
@@ -200,7 +245,6 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
     getSortedRowModel: getSortedRowModel(),
   })
 
-  // Prevent rendering until local storage is loaded to avoid hydration mismatch
   if (!visLoaded || !orderLoaded || !colsLoaded || !customLoaded) return null;
 
   const hasBlurred = !isAuth && universities.length > VISIBLE_WITHOUT_AUTH
@@ -209,16 +253,17 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
   const addCustomColumn = () => {
     if (!newColumnName.trim()) return
     const name = newColumnName.trim()
-    if (!customColumnsList.includes(name)) {
-      setCustomColumnsList([...customColumnsList, name])
+    if (!customColsDef[name]) {
+      setCustomColsDef(prev => ({ ...prev, [name]: newColumnType }))
       setColumnVisibility(prev => ({ ...prev, [`custom_${name}`]: true }))
     }
     setNewColumnName('')
   }
 
   const removeCustomColumn = (name: string) => {
-    setCustomColumnsList(customColumnsList.filter(c => c !== name))
-    // Also cleanup visibility state
+    const newDefs = {...customColsDef}
+    delete newDefs[name]
+    setCustomColsDef(newDefs)
     const newVis = {...columnVisibility}
     delete newVis[`custom_${name}`]
     setColumnVisibility(newVis)
@@ -227,7 +272,6 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
   return (
     <div className="relative">
       
-      {/* Table Toolbar / Settings */}
       <div className="flex justify-end mb-4 relative z-10">
         <Button 
           variant="outline" 
@@ -239,7 +283,7 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
         </Button>
 
         {showSettings && (
-          <div className="absolute top-full right-0 mt-2 w-80 bg-surface border-2 border-ink rounded-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] z-50 p-5 overflow-hidden">
+          <div className="absolute top-full right-0 mt-2 w-96 bg-surface border-2 border-ink rounded-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] z-50 p-5 overflow-hidden">
             <div className="flex justify-between items-center mb-4 border-b-2 border-border pb-2">
               <h3 className="font-display font-bold text-lg">COLUMNS</h3>
               <button onClick={() => setShowSettings(false)} className="text-ink-muted hover:text-ink"><X size={18}/></button>
@@ -273,16 +317,26 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
 
             <div className="pt-4 border-t-2 border-border">
               <p className="text-xs font-bold text-ink-muted uppercase mb-2">Add Custom Column</p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 mb-2">
+                <select 
+                  value={newColumnType} 
+                  onChange={e => setNewColumnType(e.target.value as 'text'|'tags')}
+                  className="bg-bg border-2 border-border rounded-lg text-xs font-bold px-2 outline-none"
+                >
+                  <option value="text">Text Notes</option>
+                  <option value="tags">Tags & Links</option>
+                </select>
                 <Input 
                   value={newColumnName}
                   onChange={e => setNewColumnName(e.target.value)}
-                  placeholder="e.g. My Target Majors"
-                  className="h-9 text-sm border-2 font-medium"
+                  placeholder="e.g. Target Majors"
+                  className="h-9 text-sm border-2 font-medium flex-1"
                   onKeyDown={e => e.key === 'Enter' && addCustomColumn()}
                 />
-                <Button size="sm" onClick={addCustomColumn} className="h-9 px-3 border-2"><Plus size={16}/></Button>
               </div>
+              <Button size="sm" onClick={addCustomColumn} className="w-full h-9 border-2 font-bold uppercase tracking-wider">
+                <Plus size={16} className="mr-2"/> Create Field
+              </Button>
             </div>
           </div>
         )}
@@ -329,7 +383,6 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
               </tr>
             ))}
 
-            {/* Blurred rows */}
             {hasBlurred && allRows.slice(VISIBLE_WITHOUT_AUTH).map((row) => (
               <tr key={row.id} className="border-t border-border">
                 {row.getVisibleCells().map((cell) => (
@@ -345,7 +398,6 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
         </table>
       </div>
 
-      {/* Auth gate overlay */}
       {hasBlurred && (
         <div className="absolute bottom-0 left-0 right-0 h-48 flex flex-col items-center justify-end pb-6 bg-gradient-to-t from-bg via-bg/90 to-transparent rounded-b-2xl">
           <div className="text-center">

@@ -10,11 +10,11 @@ import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils'
 
 const NAV_LINKS = [
-  { href: '/universities', translationKey: 'universities' },
-  { href: '/majors', translationKey: 'majors' },
-  { href: '/scholarships', translationKey: 'scholarships' },
-  { href: '/deadlines', translationKey: 'deadlines' },
-  { href: '/about', translationKey: 'about' },
+  { href: '/universities', label: 'Universities' },
+  { href: '/majors', label: 'Majors' },
+  { href: '/scholarships', label: 'Scholarships' },
+  { href: '/deadlines', label: 'Deadlines' },
+  { href: '/about', label: 'About' },
 ]
 
 export function Navbar() {
@@ -73,7 +73,7 @@ export function Navbar() {
                     : 'text-ink-muted hover:text-ink'
                 )}
               >
-                {link.translationKey ? t(link.translationKey) : t(link.translationKey)}
+                {link.label}
               </Link>
             ))}
           </nav>
@@ -101,7 +101,7 @@ export function Navbar() {
               >
                 <Link to="/compare">
                   <Button variant="outline" size="sm" className="hidden sm:flex">
-                    {t('compare', 'Сравнить')}
+                    {'Сравнить'}
                     <span className="ml-1 w-5 h-5 flex items-center justify-center rounded-full bg-accent text-white text-xs font-bold">
                       {selectedIds.length}
                     </span>
@@ -158,7 +158,7 @@ export function Navbar() {
               </div>
             ) : (
               <Button size="sm" onClick={() => setAuthOpen(true)}>
-                {t('login')}
+                Login
               </Button>
             )}
 
@@ -189,7 +189,7 @@ export function Navbar() {
                   to={link.href}
                   className="block px-3 py-2 rounded-lg text-sm font-medium text-ink hover:bg-bg transition-colors"
                 >
-                  {link.translationKey ? t(link.translationKey) : t(link.translationKey)}
+                  {link.label}
                 </Link>
               ))}
               {selectedIds.length > 0 && (
@@ -197,7 +197,7 @@ export function Navbar() {
                   to="/compare"
                   className="block px-3 py-2 rounded-lg text-sm font-medium text-accent hover:bg-bg transition-colors"
                 >
-                  {t('compare', 'Сравнить')} ({selectedIds.length})
+                  {'Сравнить'} ({selectedIds.length})
                 </Link>
               )}
             </div>

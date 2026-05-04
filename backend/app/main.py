@@ -6,7 +6,7 @@ from slowapi.errors import RateLimitExceeded
 from .config import settings
 from .database import Base, engine
 from .middleware.rate_limit import limiter, rate_limit_handler
-from .routers import auth, universities, scholarships, deadlines, applications, intake, admin, profile, admin_api
+from .routers import auth, universities, scholarships, deadlines, applications, intake, admin, profile, admin_api, submissions
 
 app = FastAPI(title="ChinaUni API", version="1.0.0", docs_url="/api/docs")
 
@@ -28,6 +28,7 @@ app.add_middleware(
 # Routers
 app.include_router(auth.router)
 app.include_router(universities.router)
+app.include_router(submissions.router)
 app.include_router(scholarships.router)
 app.include_router(deadlines.router)
 app.include_router(applications.router)

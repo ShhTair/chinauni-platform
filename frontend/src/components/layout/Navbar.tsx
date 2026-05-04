@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, User, LogOut, Settings, ChevronDown, Palette } from 'lucide-react'
 import { useAuthStore } from '@/stores/auth'
@@ -20,7 +19,6 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const { user, logout } = useAuthStore()
-  const { t } = useTranslation()
   const { selectedIds } = useCompareStore()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [authOpen, setAuthOpen] = useState(false)

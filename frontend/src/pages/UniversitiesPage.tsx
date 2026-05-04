@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next'
 import { useState, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
@@ -42,7 +41,6 @@ const VIEW_BUTTONS: { mode: ViewMode; icon: React.ElementType; translationKey: s
 ]
 
 export function UniversitiesPage() {
-  const { t } = useTranslation();
   const filters = useFiltersStore()
   const { user } = useAuthStore()
   const [authOpen, setAuthOpen] = useState(false)
@@ -195,7 +193,7 @@ export function UniversitiesPage() {
                 )
               ) : error ? (
                 <div className="text-center py-20">
-                  <p className="text-ink-muted">{t('load_error', 'Ошибка загрузки. Попробуйте снова.')}</p>
+                  <p className="text-ink-muted">{'Ошибка загрузки. Попробуйте снова.'}</p>
                 </div>
               ) : (
                 <>
@@ -235,13 +233,13 @@ export function UniversitiesPage() {
                       className="mt-8 text-center bg-surface rounded-2xl border border-border p-8"
                     >
                       <p className="font-display text-2xl text-ink mb-2">
-                        {t('see_partial_db', 'Видите только часть базы')}
+                        {'Видите только часть базы'}
                       </p>
                       <p className="text-ink-muted mb-4">
-                        {t('login_to_see_all', 'Войдите чтобы увидеть все')} {total}+ {t('universities_portals_data', 'университетов, ссылки на порталы и полные данные')}
+                        {'Войдите чтобы увидеть все'} {total}+ {'университетов, ссылки на порталы и полные данные'}
                       </p>
                       <Button onClick={() => setAuthOpen(true)}>
-                        {t('login_free', 'Войти бесплатно')}
+                        {'Войти бесплатно'}
                       </Button>
                     </motion.div>
                   )}

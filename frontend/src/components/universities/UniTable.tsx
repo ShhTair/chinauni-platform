@@ -66,6 +66,17 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
   // Custom data: uniId -> colName -> CustomFieldData
   const [customFields, setCustomFields, customLoaded] = usePersistedState<Record<string, Record<string, CustomFieldData>>>('table_custom_fields_v2', {})
   
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const [editUniId, setEditUniId] = useState('')
+  const [editField, setEditField] = useState('')
+  const [editVal, setEditVal] = useState('')
+
+  const handleEdit = (uniId: string, field: string, val: string) => {
+    setEditUniId(uniId)
+    setEditField(field)
+    setEditVal(val)
+    setEditModalOpen(true)
+  }
   const [showSettings, setShowSettings] = useState(false)
   const [newColumnName, setNewColumnName] = useState('')
   const [newColumnType, setNewColumnType] = useState<'text'|'tags'>('text')

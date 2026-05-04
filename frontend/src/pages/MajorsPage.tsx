@@ -27,8 +27,8 @@ export default function MajorsPage() {
   // Filter universities based on selected field or search
   const filteredUnis = useMemo(() => {
     return universities.filter((uni: any) => {
-      // Mock search since we don't have major details in the brief list
-      if (search && !uni.name.toLowerCase().includes(search.toLowerCase())) return false
+      // Mock search: if search term exists, check uni name or city
+      if (search && !uni.name.toLowerCase().includes(search.toLowerCase()) && !uni.city.toLowerCase().includes(search.toLowerCase())) return false
       return true
     })
   }, [universities, search, selectedField])

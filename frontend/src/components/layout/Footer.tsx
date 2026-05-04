@@ -21,7 +21,6 @@ export function Footer() {
             <ul className="space-y-2">
               {[
                 { href: '/universities', label: 'Каталог' },
-                { href: '/scholarships', label: 'Стипендии' },
                 { href: '/deadlines', label: 'Дедлайны' },
                 { href: '/compare', label: 'Сравнение' },
               ].map((l) => (

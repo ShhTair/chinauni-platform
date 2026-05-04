@@ -12,6 +12,7 @@ import {
 import { Link } from 'react-router-dom'
 import { ArrowUpDown, ArrowUp, ArrowDown, Lock, Settings2, GripVertical, Check, Plus, Link as LinkIcon, Trash2, X } from 'lucide-react'
 import { Stars, LeagueBadge, PortalBadge } from '@/components/ui/Badge'
+import { EditSuggestionModal } from './EditSuggestionModal'
 import { formatCNY, formatUSD, cn } from '@/lib/utils'
 import type { University } from '@/types'
 import { Button } from '@/components/ui/Button'
@@ -113,19 +114,33 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
       col.accessor('english_ug', {
         id: 'english_ug',
         header: 'ENGLISH UG',
-        cell: (info) => {
+                cell: (info) => {
           const v = info.getValue()
-          if (v === 'yes') return <span className="text-emerald-600 font-bold text-xs uppercase tracking-wider">Yes</span>
-          if (v === 'partial') return <span className="text-amber-600 font-bold text-xs uppercase tracking-wider">Partial</span>
-          return <span className="text-rose-600 font-bold text-xs uppercase tracking-wider">No</span>
+          const uniId = info.row.original.id
+          let badge = <span className="text-rose-600 font-bold text-xs uppercase tracking-wider">No</span>
+          if (v === 'yes') badge = <span className="text-emerald-600 font-bold text-xs uppercase tracking-wider">Yes</span>
+          else if (v === 'partial') badge = <span className="text-amber-600 font-bold text-xs uppercase tracking-wider">Partial</span>
+          
+          return (
+            <div className="group flex items-center justify-between min-w-[100px]">
+              {badge}
+              <button onClick={() => handleEdit(uniId, 'english_ug', v as string)} className="opacity-0 group-hover:opacity-100 text-xs text-accent hover:underline ml-2">Edit</button>
+            </div>
+          )
         },
       }),
       col.accessor('qs_rank', {
         id: 'qs_rank',
         header: 'QS RANK',
-        cell: (info) => {
+                cell: (info) => {
           const v = info.getValue()
-          return v ? <span className="font-mono text-sm">#{v}</span> : <span className="text-ink-faint">—</span>
+          const uniId = info.row.original.id
+          return (
+            <div className="group flex items-center justify-between min-w-[80px]">
+              {v ? <span className="font-mono text-sm">#{v}</span> : <span className="text-ink-faint">—</span>}
+              <button onClick={() => handleEdit(uniId, 'qs_rank', v ? v.toString() : '')} className="opacity-0 group-hover:opacity-100 text-xs text-accent hover:underline ml-2">Edit</button>
+            </div>
+          )
         },
       }),
       col.accessor('shanghai_rank', {
@@ -157,7 +172,16 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
       col.accessor('tuition_cny_yr', {
         id: 'tuition',
         header: 'TUITION (CNY)',
-        cell: (info) => <span className="font-mono text-sm">{formatCNY(info.getValue())}</span>,
+                cell: (info) => {
+          const v = info.getValue()
+          const uniId = info.row.original.id
+          return (
+            <div className="group flex items-center justify-between min-w-[120px]">
+              <span className="font-mono text-sm">{formatCNY(v)}</span>
+              <button onClick={() => handleEdit(uniId, 'tuition_cny_yr', v ? v.toString() : '')} className="opacity-0 group-hover:opacity-100 text-xs text-accent hover:underline ml-2">Edit</button>
+            </div>
+          )
+        },
       }),
     ],
     []
@@ -418,6 +442,7 @@ export function UniTable({ universities, isAuth, onAuthRequired }: UniTableProps
           </div>
         </div>
       )}
+      <EditSuggestionModal open={editModalOpen} onClose={() => setEditModalOpen(false)} uniId={editUniId} fieldName={editField} currentVal={editVal} />
     </div>
   )
 }
